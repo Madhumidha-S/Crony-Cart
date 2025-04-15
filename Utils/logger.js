@@ -12,8 +12,8 @@ const logger = winston.createLogger({
     winston.format.json()
   ),
   defaultMeta: {
-    service: "url_shortner_service",
-    app: "URL Shortener",
+    service: "crony_cart_service",
+    app: "Crony-Cart",
     environment: config.env,
   },
 });
