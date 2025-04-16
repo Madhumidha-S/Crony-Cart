@@ -1,7 +1,7 @@
 import pool from "../config/db.js";
 
-export const createProductService = async (name, description, base_price) => {
-    const queryText = await pool.query("INSERT INTO products (name, description, base_price) VALUES ($1, $2, $3) RETURNING *", [name, description, base_price]);
+export const createProductService = async (name, description, base_price, rating) => {
+    const queryText = await pool.query("INSERT INTO products (name, description, base_price, rating) VALUES ($1, $2, $3, $4) RETURNING *", [name, description, base_price, rating]);
     return result.rows[0];
 };
 
@@ -15,13 +15,14 @@ export const getProductByIdService = async (id) => {
     return result.rows[0];
 };
 
-export const updateProductService = async (id, name, description, base_price) => {
+export const updateProductService = async (id, name, description, base_price,rating) => {
     const queryText = await pool.query(`UPDATE products SET 
         name = COALESCE($1, name),
         description = COALESCE($2, description),
         base_price = COALESCE($3, base_price)
-    WHERE id = $4 RETURNING *`, 
-    [name, description, base_price, id]);
+        rating = COALESCE($4, rating)
+    WHERE id = $5 RETURNING *`, 
+    [name, description, base_price, rating, id]);
     return result.rows[0];
 };
 
