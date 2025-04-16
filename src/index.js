@@ -3,7 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 import pool from "./config/db.js";
-import productRoutes from "./routes/user_routes.js";
+import productRoutes from "./routes/product_routes.js";
 import errorHandling from "./middleware/errorHandler.js";
 import { createProductTable } from "./data/tableGeneration.js";
 
