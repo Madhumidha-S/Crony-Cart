@@ -1,5 +1,25 @@
 import pool from "../config/db.js";
 
+export const createProductTable = async () => {
+    const queryText = `
+    CREATE TABLE IF NOT EXISTS products(
+        id SERIAL PRIMARY KEY,
+        base_price INT NOT NULL,
+        product_views INT DEFAULT 0,
+        num_ordered INT DEFAULT 0,
+        is_disabled BOOL DEFAULT FALSE,
+        name VARCHAR(100) NOT NULL,
+        description VARCHAR(100),
+        created_at TIMESTAMP DEFAULT NOW()
+    );`;
+    try {
+        pool.query(queryText);
+        console.log("Product Table create if not exists");
+    } catch (err) {
+        console.log("Error creating products table : ", err);
+    }
+};
+
 export const createUserTable = async () => {
     const queryText = 'CREATE TABLE IF NOT EXISTS users( id SERIAL PRIMARY KEY, name VARCHAR(100) NOT NULL, email VARCHAR(100) UNIQUE NOT NULL, created_at TIMESTAMP DEFAULT NOW())';
     try {
@@ -8,17 +28,6 @@ export const createUserTable = async () => {
     } catch (err) {
         console.log("Error creating users table : ", err);
     }
-};
-
-export const createProductTable = async () => {
-    const queryText = `
-        CREATE TABLE IF NOT EXISTS products( id SERIAL PRIMARY KEY,   base_price INT NOT NULL, name VARCHAR(100) NOT NULL, description VARCHAR(100), created_at TIMESTAMP DEFAULT NOW()) `;
-        try {
-            pool.query(queryText);
-            console.log("Product Table create if not exists");
-        } catch (err) {
-            console.log("Error creating products table : ", err);
-        }
 };
 
 export const createOrderTable = async () => {
@@ -72,8 +81,3 @@ export const createReviewTable = async () => {
         console.log("Error creating reviews table : ", err);
     }
 };
-
-
-
-
-
