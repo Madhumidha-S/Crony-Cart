@@ -68,3 +68,5 @@ pids/
 # Optional: Mac M1 native addons
 # -----------------
 *.node
+
+**/*users*
