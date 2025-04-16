@@ -7,9 +7,12 @@ CREATE TABLE IF NOT EXISTS users(
 
 CREATE TABLE IF NOT EXISTS products(
     id SERIAL PRIMARY KEY,
-    base_price INT NOT NULL,
     name VARCHAR(100) NOT NULL,
     description VARCHAR(100),
+    base_price INT NOT NULL,
+    product_views INT DEFAULT 0,
+    num_ordered INT DEFAULT 0,
+    is_disabled BOOL DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT NOW()
 )
 
