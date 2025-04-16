@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS products(
     name VARCHAR(100) NOT NULL,
     description VARCHAR(100),
     base_price INT NOT NULL,
+    rating FLOAT DEFAULT 0,
     product_views INT DEFAULT 0,
     num_ordered INT DEFAULT 0,
     is_disabled BOOL DEFAULT FALSE,

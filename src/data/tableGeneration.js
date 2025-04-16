@@ -5,6 +5,7 @@ export const createProductTable = async () => {
     CREATE TABLE IF NOT EXISTS products(
         id SERIAL PRIMARY KEY,
         base_price INT NOT NULL,
+        rating FLOAT DEFAULT 0,
         product_views INT DEFAULT 0,
         num_ordered INT DEFAULT 0,
         is_disabled BOOL DEFAULT FALSE,
