@@ -3,7 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 import pool from "./config/db.js";
-import userRoutes from "./routes/user_routes.js";
+import productRoutes from "./routes/user_routes.js";
 import errorHandling from "./middleware/errorHandler.js";
 import { createProductTable } from "./data/tableGeneration.js";
 
@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(cors());
 
 //routes
-app.use("/api", userRoutes);
+app.use("/api", productRoutes);
 
 //error handling middleware
 app.use(errorHandling);
