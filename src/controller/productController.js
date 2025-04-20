@@ -1,4 +1,4 @@
-import { createProductService, deleteProductService, getAllProductsService, getProductByIdService, updateProductService } from "../models/productModel.js";
+import { createProductService, deleteProductService, getAllProductsService, incrementProductViewService, getProductByIdService, placeOrderService, updateProductService } from "../models/productModel.js";
 import { filterAndSortProducts, transformProductData } from "../utils/productUtils.js";
 
 const handleResponse = (res, status, message, data = null) => {
@@ -31,7 +31,7 @@ export const getAllProducts = async (req, res, next) => {
 
 export const getProductById = async (req, res, next) => {
     try {
-        await incrementProductViewService(productId);
+        await incrementProductViewService(req.params.id);
         const product = await getProductByIdService(req.params.id);
         if (!product) return handleResponse(res, 404, "Product not found");
         const transformedProduct = transformProductData(product);
@@ -40,6 +40,20 @@ export const getProductById = async (req, res, next) => {
         next(err);
     }
 };
+
+export const placeOrder = async (req, res, next) => {
+    const { id } = req.params;
+
+    try {
+        const updatedProduct = await placeOrderService(id);
+        if (!updatedProduct) return handleResponse(res, 404, "Product not found");
+        const transformed = transformProductData(updatedProduct);
+        handleResponse(res, 200, "Order placed successfully", transformed);
+    } catch (err) {
+        next(err);
+    }
+};
+
 
 export const updateProduct = async (req, res, next) => {
     const { name, description, base_price, rating } = req.body;

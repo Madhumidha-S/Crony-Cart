@@ -10,10 +10,10 @@ export const getAllProductsService = async () => {
     return result.rows;
 }; // TODO : Filter attributes before returning to user
 
-export const incrementProductViewService = async (productId) => {
-    const result = await db.query(
-        `UPDATE products SET view = view + 1 WHERE id = $1 RETURNING *`,
-        [productId]
+export const incrementProductViewService = async (id) => {
+    const result = await pool.query(
+        `UPDATE products SET product_views = product_views + 1 WHERE id = $1 RETURNING *`,
+        [id]
     );
     return result.rows[0];
 };
@@ -23,14 +23,26 @@ export const getProductByIdService = async (id) => {
     return result.rows[0];
 };
 
-export const updateProductService = async (id, name, description, base_price,rating) => {
+export const placeOrderService = async (id) => {
+    const result = await pool.query(
+        `UPDATE products 
+         SET num_ordered = COALESCE(num_ordered, 0) + 1
+         WHERE id = $1
+         RETURNING *`,
+        [id]
+    );
+    console.log(`Product id : ${id}`);
+    return result.rows[0];
+};
+
+export const updateProductService = async (id, name, description, base_price, rating) => {
     const result = await pool.query(`UPDATE products SET 
         name = COALESCE($1, name),
         description = COALESCE($2, description),
         base_price = COALESCE($3, base_price),
         rating = COALESCE($4, rating)
-    WHERE id = $5 RETURNING *`, 
-    [name, description, base_price, rating, id]);
+    WHERE id = $5 RETURNING *`,
+        [name, description, base_price, rating, id]);
     return result.rows[0];
 };
 
