@@ -1,4 +1,5 @@
 import { createProductService, deleteProductService, getAllProductsService, getProductByIdService, updateProductService } from "../models/productModel.js";
+import { filterAndSortProducts, transformProductData } from "../utils/productUtils.js";
 
 const handleResponse = (res, status, message, data = null) => {
     res.status(status).json({
@@ -21,7 +22,8 @@ export const createProduct = async (req, res, next) => {
 export const getAllProducts = async (req, res, next) => {
     try {
         const products = await getAllProductsService();
-        handleResponse(res, 200, "Products fetched successfully", products);
+        const filteredSortedProducts = filterAndSortProducts(products);
+        handleResponse(res, 200, "Products fetched successfully", filteredSortedProducts);
     } catch (err) {
         next(err);
     }
@@ -29,9 +31,11 @@ export const getAllProducts = async (req, res, next) => {
 
 export const getProductById = async (req, res, next) => {
     try {
+        await incrementProductViewService(productId);
         const product = await getProductByIdService(req.params.id);
-        if (!product) return handleResponse(res, 404, "Product not found")
-        handleResponse(res, 200, "Product fetched successfully", product);
+        if (!product) return handleResponse(res, 404, "Product not found");
+        const transformedProduct = transformProductData(product);
+        handleResponse(res, 200, "Product fetched successfully", transformedProduct);
     } catch (err) {
         next(err);
     }
